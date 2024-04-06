@@ -22,8 +22,8 @@
   },
   "lint-staged": {
     "*.(js|jsx)": [
-      "yarn format",
-      "yarn lint:fix"
+      "yarn run format",
+      "yarn run lint:fix"
     ]
   },
   "browserslist": {
