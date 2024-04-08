@@ -6,17 +6,19 @@ import fetchMovies from '../../services/fetchMovies'
 import './card.scss'
 
 function CardItem() {
-  const { Title, Text } = Typography
+  const { Title, Text, Paragraph } = Typography
   const fontStyle = {
     fontWeight: 400,
     fontSize: 12,
     lineHeight: '22px',
   }
 
+  const [expand, setExpand] = useState(false)
+
   const [movies, setMovies] = useState({
     id: null,
     title: null,
-    releaseDate: null,
+    releaseDate: new Date(),
     overview: null,
   })
 
@@ -55,12 +57,10 @@ function CardItem() {
             level={3}
             style={{ fontWeight: 400, fontSize: 20, lineHeight: '27px' }}
           >
-            {/* The way back */}
             {title}
           </Title>
           <Text className='card__timestamp' type='secondary' style={fontStyle}>
-            {/* March 5, 2020 */}
-            {format(releaseDate, 'MM/dd/yyyy')}
+            {format(releaseDate, 'MMMM dd, yyyy')}
           </Text>
           <div className='card__genre'>
             <Text keyboard type='secondary'>
@@ -70,11 +70,21 @@ function CardItem() {
               Drama
             </Text>
           </div>
-          <Text className='card__overview' style={fontStyle}>
-            {/* Back from a tour of duty, Kelli struggles to find her place in her
-            family and the rust-belt town she no longer recognizes. */}
+          <Paragraph
+            className='card__overview'
+            style={fontStyle}
+            ellipsis={
+              !expand
+                ? {
+                    expandable: false,
+                    rows: 3,
+                  }
+                : false
+            }
+            onClick={() => setExpand((show) => !show)}
+          >
             {overview}
-          </Text>
+          </Paragraph>
         </Flex>
       </Flex>
     </Card>
