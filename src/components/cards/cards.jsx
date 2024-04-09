@@ -1,15 +1,22 @@
+import PropTypes from 'prop-types'
 import { Space } from 'antd'
 import CardItem from '../card/card'
 
 import './cards.scss'
 
-function CardList() {
+// eslint-disable-next-line react/prop-types
+function CardList({ movies }) {
   return (
     <Space className='list list--layout' direction='horizontal' size={36} wrap>
-      <CardItem />
-      <CardItem />
+      {movies.map((item) => (
+        <CardItem key={item.id} movies={item} />
+      ))}
     </Space>
   )
+}
+
+CardList.propTypes = {
+  movies: PropTypes.instanceOf(Array).isRequired,
 }
 
 export default CardList

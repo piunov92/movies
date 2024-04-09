@@ -1,13 +1,9 @@
-// @import './fonts';
-
 .card {
   width: 451px;
-
   &__cover {
     img {
       display: block;
-      width: 183px;
-      height: 281px;
+      border-radius: 8px;
     }
   }
 
@@ -42,5 +38,10 @@
   &__overview {
     margin-top: 7px;
     font-family: 'Inter', sans-serif;
+    max-height: 150px;
+    // overflow-y: auto;
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }

@@ -1,5 +1,6 @@
-const fetchMovies = async (search, page = 1) => {
-  const url = `https://api.themoviedb.org/3/search/movie?query=${search}&page=${page}`
+const fetchMovies = async (type, search = '', page = 1) => {
+  const searchUrl = `movie?query=${search}&page=${page}`
+  const url = `https://api.themoviedb.org/3/${type}/${type === 'movie' ? 'popular' : searchUrl}`
   const res = await fetch(url, {
     method: 'GET',
     headers: {
