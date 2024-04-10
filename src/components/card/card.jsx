@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 
 import './card.scss'
 
-// eslint-disable-next-line react/prop-types
 function CardItem({ movies }) {
   const { Title, Text, Paragraph } = Typography
   const [expand, setExpand] = useState(false)
@@ -16,14 +15,7 @@ function CardItem({ movies }) {
     lineHeight: '22px',
   }
 
-  const mov = {
-    title: movies.title,
-    releaseDate: movies.release_date || new Date(),
-    overview: movies.overview,
-    posterPath: movies.poster_path,
-  }
-
-  const { title, overview, releaseDate, posterPath } = mov
+  const { title, overview, releaseDate, posterPath } = movies
 
   return (
     <Card

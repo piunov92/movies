@@ -4,7 +4,6 @@ import CardItem from '../card/card'
 
 import './cards.scss'
 
-// eslint-disable-next-line react/prop-types
 function CardList({ movies }) {
   return (
     <Space className='list list--layout' direction='horizontal' size={36} wrap>

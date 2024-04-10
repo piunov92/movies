@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Layout, Input } from 'antd'
 import { useDebounce } from 'use-debounce'
 import CardList from '../cards/cards'
-import fetchMovies from '../../services/fetchMovies'
+import { getFoundMovies, getPopularMovies } from '../../services/getResource'
 
 import './app.scss'
 
@@ -11,15 +11,13 @@ function App() {
   const [searchField, setSearchField] = useState('')
   const [debouncedValue] = useDebounce(searchField, 500)
 
-  const getMovieData = (type, search) => {
-    fetchMovies(type, search).then((data) => setMovies(data))
-  }
-
   useEffect(() => {
     if (debouncedValue === '') {
-      getMovieData('movie')
+      getPopularMovies().then((data) => setMovies(data))
     } else {
-      getMovieData('search', debouncedValue)
+      getFoundMovies(debouncedValue).then((data) =>
+        setMovies(data, console.log(data)),
+      )
     }
   }, [debouncedValue])
 
