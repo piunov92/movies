@@ -1,13 +1,29 @@
-import { useState } from 'react'
+/* eslint-disable react/no-array-index-key */
+
+import { useContext, useState } from 'react'
 import { Card, Flex, Typography, Image } from 'antd'
 import { format } from 'date-fns'
 import PropTypes from 'prop-types'
+import Context from '../context/context'
 
 import './card.scss'
 
 function CardItem({ movies }) {
+  const { title, overview, releaseDate, posterPath, genreIds } = movies
+  const genres = useContext(Context)
   const { Title, Text, Paragraph } = Typography
   const [expand, setExpand] = useState(false)
+
+  const genresData = () => {
+    const genreTitles = []
+    genres.forEach((itemGenres) =>
+      genreIds.forEach(
+        (itemIds) =>
+          itemGenres.id === itemIds && genreTitles.push(itemGenres.name),
+      ),
+    )
+    return genreTitles
+  }
 
   const fontStyle = {
     fontWeight: 400,
@@ -15,13 +31,12 @@ function CardItem({ movies }) {
     lineHeight: '22px',
   }
 
-  const { title, overview, releaseDate, posterPath } = movies
-
   return (
     <Card
       className='card'
       hoverable
       styles={{
+        width: 300,
         body: {
           padding: 0,
           overflow: 'hidden',
@@ -47,12 +62,13 @@ function CardItem({ movies }) {
             {format(releaseDate, 'MMMM dd, yyyy')}
           </Text>
           <div className='card__genre'>
-            <Text keyboard type='secondary'>
-              Action
-            </Text>
-            <Text keyboard type='secondary'>
-              Drama
-            </Text>
+            {genresData.length > 0
+              ? null
+              : genresData().map((item, i) => (
+                  <Text key={i} keyboard type='secondary'>
+                    {item}
+                  </Text>
+                ))}
           </div>
           <Paragraph
             className='card__overview'

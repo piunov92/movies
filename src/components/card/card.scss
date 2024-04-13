@@ -1,8 +1,10 @@
 .card {
   width: 451px;
+  height: 281px;
   &__cover {
     img {
       display: block;
+      height: auto;
       border-radius: 8px;
     }
   }
@@ -25,12 +27,12 @@
     margin-top: 7px;
     margin-left: -2.52px;
     span {
-      margin-right: 3px;
       kbd {
         font-family: 'Inter', sans-serif;
         font-size: 12px;
         font-weight: 400;
         line-height: 22px;
+        text-wrap: nowrap;
       }
     }
   }

@@ -13,22 +13,26 @@ const getResource = async (url) => {
   return res.json()
 }
 
+export const getGenreMovies = async () => {
+  const data = await getResource(`genre/movie/list`)
+  return data.genres
+}
+
 const transformData = (data) => ({
   id: data.id,
-  genreIds: data.genre_ids,
   title: data.title,
   releaseDate: data.release_date || new Date(),
+  genreIds: data.genre_ids,
   overview: data.overview,
   posterPath: data.poster_path,
 })
 
 export const getFoundMovies = async (search, page = 1) => {
   const data = await getResource(`search/movie?query=${search}&page=${page}`)
-  console.log(data.results)
   return data.results.map(transformData)
 }
 
-export const getPopularMovies = async () => {
-  const data = await getResource(`movie/popular`)
+export const getPopularMovies = async (page = 1) => {
+  const data = await getResource(`movie/popular?page=${page}`)
   return data.results.map(transformData)
 }
