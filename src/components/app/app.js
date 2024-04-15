@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Layout, Input } from 'antd'
+import { Layout, Input, Pagination } from 'antd'
 import { useDebounce } from 'use-debounce'
 import CardList from '../cards/cards'
 import Context from '../context/context'
@@ -16,22 +16,28 @@ function App() {
   const [movies, setMovies] = useState([])
   const [searchField, setSearchField] = useState('')
   const [genres, setGenres] = useState([])
+  const [pageSize, setPageSize] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
   const [debouncedValue] = useDebounce(searchField, 500)
+
+  const MAX_API_ELEMENTS = 10000
 
   useEffect(() => {
     if (debouncedValue === '') {
-      getPopularMovies().then((data) => {
-        setMovies(data, console.log(data))
+      getPopularMovies(currentPage).then((data) => {
+        setMovies(data.results, console.log(data.results))
+        setPageSize(data.pages)
       })
     } else {
-      getFoundMovies(debouncedValue).then((data) =>
-        setMovies(data, console.log(data)),
-      )
+      getFoundMovies(debouncedValue, currentPage).then((data) => {
+        setMovies(data.results)
+        setPageSize(data.pages)
+      })
     }
-  }, [debouncedValue])
+  }, [debouncedValue, currentPage])
 
   useEffect(() => {
-    getGenreMovies().then((data) => setGenres(data, console.log(data)))
+    getGenreMovies().then((data) => setGenres(data))
   }, [])
 
   const handleSearch = (e) => {
@@ -51,9 +57,20 @@ function App() {
             />
           </div>
           {movies.length > 0 ? (
-            <Context.Provider value={genres}>
-              <CardList movies={movies} />
-            </Context.Provider>
+            <>
+              <Context.Provider value={genres}>
+                <CardList movies={movies} />
+              </Context.Provider>
+              <Pagination
+                className='pagination pagination--layout'
+                onChange={(prev) => setCurrentPage(prev)}
+                // onShowSizeChange={500}
+                defaultPageSize={movies.length}
+                total={
+                  pageSize > 500 ? MAX_API_ELEMENTS : pageSize * movies.length
+                }
+              />
+            </>
           ) : (
             <LoadingSpin />
           )}
