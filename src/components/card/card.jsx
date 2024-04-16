@@ -3,6 +3,7 @@
 import { useContext, useState } from 'react'
 import { Card, Flex, Typography, Image } from 'antd'
 import { format } from 'date-fns'
+import { ru } from 'date-fns/locale'
 import PropTypes from 'prop-types'
 import Context from '../context/context'
 
@@ -38,6 +39,7 @@ function CardItem({ movies }) {
       styles={{
         width: 300,
         body: {
+          display: 'contents',
           padding: 0,
           overflow: 'hidden',
         },
@@ -59,7 +61,7 @@ function CardItem({ movies }) {
             {title}
           </Title>
           <Text className='card__timestamp' type='secondary' style={fontStyle}>
-            {format(releaseDate, 'MMMM dd, yyyy')}
+            {format(releaseDate, 'dd MMMM, yyyy', { locale: ru })}
           </Text>
           <div className='card__genre'>
             {genresData.length > 0
