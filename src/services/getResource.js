@@ -7,10 +7,18 @@ const getResource = async (url) => {
         'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkYWE4ODdhZTVjMjM4ZWE5M2FmMGMyMDRmMzViMzFjOSIsInN1YiI6IjY2MGZjMjcyMmQ1MzFhMDE2NDdlMDE2ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KtciZ7i1PsOcUoZgaYyKtciwNKkj0a8ISxFQ7cz8osI',
     },
   })
-  if (!res.ok) {
-    throw new Error(`Could not Fetch ${url}, received ${res.status}`)
-  }
+  // if (!res.ok) {
+  //   throw new Error(`Could not Fetch ${url}, received ${res.status}`)
+  // }
   return res.json()
+}
+
+export const createGuestSession = async () => {
+  const data = await getResource(`authentication/guest_session/new`)
+  return {
+    success: data.success,
+    guestSessionId: data.guest_session_id,
+  }
 }
 
 export const getGenreMovies = async () => {
@@ -48,4 +56,11 @@ export const getPopularMovies = async (page = 1) => {
     pages: data.total_pages,
     totalResults: data.total_results,
   }
+}
+
+export const getRatedMovies = async (sessionID, page = 1) => {
+  const data = await getResource(
+    `guest_session/${sessionID}/rated/movies?language=ru-RU&page=${page}&sort_by=created_at.asc`,
+  )
+  return data
 }
