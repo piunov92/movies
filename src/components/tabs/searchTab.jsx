@@ -2,18 +2,12 @@ import { useState, useEffect } from 'react'
 import { useDebounce } from 'use-debounce'
 import { Layout, Input, Pagination } from 'antd'
 import CardList from '../cards/cards'
-import Context from '../context/context'
 import LoadingSpin from '../loadingSpin/LoadingSpin'
-import {
-  getFoundMovies,
-  getGenreMovies,
-  getPopularMovies,
-} from '../../services/getResource'
+import { getFoundMovies, getPopularMovies } from '../../services/getResource'
 
 function SearchTab() {
   const [movies, setMovies] = useState([])
   const [searchField, setSearchField] = useState('')
-  const [genres, setGenres] = useState([])
   const [pageSize, setPageSize] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
   const [debouncedValue] = useDebounce(searchField, 500)
@@ -23,8 +17,7 @@ function SearchTab() {
   useEffect(() => {
     if (debouncedValue === '') {
       getPopularMovies(currentPage).then((data) => {
-        // setMovies(data.results, console.log(data.results))
-        setMovies(data.results)
+        setMovies(data.results, console.log(data.results))
         setPageSize(data.pages)
       })
     } else {
@@ -34,10 +27,6 @@ function SearchTab() {
       })
     }
   }, [debouncedValue, currentPage])
-
-  useEffect(() => {
-    getGenreMovies().then((data) => setGenres(data))
-  }, [])
 
   const handleSearch = (e) => {
     setSearchField(e.target.value)
@@ -54,9 +43,7 @@ function SearchTab() {
       </div>
       {movies.length > 0 ? (
         <>
-          <Context.Provider value={genres}>
-            <CardList movies={movies} />
-          </Context.Provider>
+          <CardList movies={movies} />
           <Pagination
             className='pagination pagination--layout'
             onChange={(prev) => setCurrentPage(prev)}

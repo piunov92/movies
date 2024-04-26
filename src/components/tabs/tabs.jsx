@@ -40,7 +40,7 @@ function TabItems({ searchContent, ratedContent }) {
 
 TabItems.propTypes = {
   searchContent: PropTypes.element.isRequired,
-  ratedContent: PropTypes.string.isRequired,
+  ratedContent: PropTypes.element.isRequired,
 }
 
 export default TabItems

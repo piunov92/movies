@@ -1,8 +1,5 @@
-// function RatedTab() {
-//   return (
-//     <>
-//     </>
-//   )
-// }
+function RatedTab() {
+  return <p>rated</p>
+}
 
-// export default RatedTab
+export default RatedTab

@@ -1,30 +1,7 @@
-const getResource = async (url) => {
-  const res = await fetch(`https://api.themoviedb.org/3/${url}`, {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization:
-        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkYWE4ODdhZTVjMjM4ZWE5M2FmMGMyMDRmMzViMzFjOSIsInN1YiI6IjY2MGZjMjcyMmQ1MzFhMDE2NDdlMDE2ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KtciZ7i1PsOcUoZgaYyKtciwNKkj0a8ISxFQ7cz8osI',
-    },
-  })
-  // if (!res.ok) {
-  //   throw new Error(`Could not Fetch ${url}, received ${res.status}`)
-  // }
-  return res.json()
-}
+import axios from 'axios'
 
-export const createGuestSession = async () => {
-  const data = await getResource(`authentication/guest_session/new`)
-  return {
-    success: data.success,
-    guestSessionId: data.guest_session_id,
-  }
-}
-
-export const getGenreMovies = async () => {
-  const data = await getResource(`genre/movie/list?language=ru`)
-  return data.genres
-}
+axios.defaults.baseURL = 'https://api.themoviedb.org/3'
+const API_KEY = 'daa887ae5c238ea93af0c204f35b31c9'
 
 const transformData = (data) => ({
   id: data.id,
@@ -37,10 +14,37 @@ const transformData = (data) => ({
   voteCount: data.vote_count,
 })
 
+export const createGuestSession = async () => {
+  const { data } = await axios.get('/authentication/guest_session/new', {
+    params: {
+      api_key: `${API_KEY}`,
+    },
+  })
+  return {
+    success: data.success,
+    guestSessionId: data.guest_session_id,
+  }
+}
+
+export const getGenreMovies = async () => {
+  const { data } = await axios.get('/genre/movie/list', {
+    params: {
+      api_key: `${API_KEY}`,
+      language: 'ru',
+    },
+  })
+  return data.genres
+}
+
 export const getFoundMovies = async (search, page = 1) => {
-  const data = await getResource(
-    `search/movie?query=${search}&language=ru-RU&page=${page}`,
-  )
+  const { data } = await axios.get('/search/movie', {
+    params: {
+      api_key: `${API_KEY}`,
+      query: search,
+      language: 'ru-Ru',
+      page,
+    },
+  })
   return {
     results: data.results.map(transformData),
     pages: data.total_pages,
@@ -49,8 +53,13 @@ export const getFoundMovies = async (search, page = 1) => {
 }
 
 export const getPopularMovies = async (page = 1) => {
-  const data = await getResource(`movie/popular?page=${page}&language=ru-RU`)
-  console.log(data)
+  const { data } = await axios.get('/movie/popular', {
+    params: {
+      api_key: `${API_KEY}`,
+      page,
+      language: 'ru-Ru',
+    },
+  })
   return {
     results: data.results.map(transformData),
     pages: data.total_pages,
@@ -58,9 +67,29 @@ export const getPopularMovies = async (page = 1) => {
   }
 }
 
+export const addRatingMovies = async (sessionId, movieId, rate) => {
+  const options = {
+    method: 'POST',
+    url: `/movie/${movieId}/rating`,
+    params: { guest_session_id: `${sessionId}`, api_key: `${API_KEY}` },
+    headers: {
+      accept: 'application/json',
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+    data: `{"value": ${rate}}`,
+  }
+
+  axios.request(options)
+}
+
 export const getRatedMovies = async (sessionID, page = 1) => {
-  const data = await getResource(
-    `guest_session/${sessionID}/rated/movies?language=ru-RU&page=${page}&sort_by=created_at.asc`,
-  )
+  const { data } = await axios.get(`/guest_session/${sessionID}/rated/movies`, {
+    params: {
+      api_key: `${API_KEY}`,
+      language: 'ru-Ru',
+      page,
+      sort_by: 'created_at.asc',
+    },
+  })
   return data
 }

@@ -13,6 +13,7 @@
   &__content {
     margin-right: 20px;
     margin-left: 20px;
+    margin-bottom: 2em;
   }
 
   &__title {
@@ -41,8 +42,6 @@
   &__overview {
     margin-top: 7px;
     font-family: 'Inter', sans-serif;
-    // max-height: 115px;
-    // overflow-y: auto;
     overflow: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;

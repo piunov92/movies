@@ -6,12 +6,13 @@ import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import PropTypes from 'prop-types'
 import Context from '../context/context'
+import RateItem from '../rate/rate'
 
 import './card.scss'
 
 function CardItem({ movies }) {
-  const { title, overview, releaseDate, posterPath, genreIds } = movies
-  const genres = useContext(Context)
+  const { title, overview, releaseDate, posterPath, genreIds, id } = movies
+  const { genres } = useContext(Context)
   const { Title, Text, Paragraph } = Typography
   const [expand, setExpand] = useState(false)
 
@@ -87,6 +88,7 @@ function CardItem({ movies }) {
           >
             {overview}
           </Paragraph>
+          <RateItem movieId={id} />
         </Flex>
       </Flex>
     </Card>
