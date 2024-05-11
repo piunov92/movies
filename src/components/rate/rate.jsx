@@ -1,8 +1,8 @@
 import { ConfigProvider, Rate } from 'antd'
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 import Context from '../context/context'
-import { getRatedMovies, setRatingMovies } from '../../services/getResource'
+import { setRatingMovies } from '../../services/getResource'
 
 function RateItem({ movieId }) {
   const [currentValue, setCurrentValue] = useState(null)
@@ -14,10 +14,6 @@ function RateItem({ movieId }) {
     setCurrentValue(value)
     setRatingMovies(guestSessionId, movieId, value)
   }
-
-  // useEffect(() => {
-  //   console.log(rating)
-  // })
 
   return (
     <ConfigProvider
@@ -32,7 +28,6 @@ function RateItem({ movieId }) {
       <Rate
         count={10}
         allowHalf
-        // onChange={(value) => setCurrentValue(value)}
         onChange={(value) => handleRate(value)}
         value={currentValue}
         style={{ position: 'absolute', top: 245, padding: 5 }}

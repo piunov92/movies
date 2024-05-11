@@ -1,6 +1,6 @@
-// import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 // import { Pagination } from 'antd'
-// import Context from '../context/context'
+import Context from '../context/context'
 // import CardList from '../cards/cards'
 // import { getRatedMovies } from '../../services/getResource'
 
@@ -8,7 +8,8 @@ function RatedTab() {
   // const [moviesRated, setMoviesRated] = useState([])
   // const [pageSize, setPageSize] = useState(0)
   // const [currentPage, setCurrentPage] = useState(1)
-  // const { guestSession } = useContext(Context)
+  const { guestSession, errGetRatingMovies } = useContext(Context)
+  const [errMessage] = errGetRatingMovies
   // const { guestSessionId } = guestSession
 
   // const MAX_API_ELEMENTS = 10000
@@ -20,6 +21,12 @@ function RatedTab() {
   //     console.log(data.results)
   //   })
   // })
+
+  // console.log(errGetRatingMovies.current)
+
+  useEffect(() => {
+    console.log(errMessage)
+  })
 
   return (
     <div>
@@ -38,6 +45,7 @@ function RatedTab() {
       ) : (
         <h1>Array is Empty</h1>
       )} */}
+      <p>{errMessage}</p>
     </div>
   )
 }

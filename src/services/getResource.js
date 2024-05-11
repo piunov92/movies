@@ -69,21 +69,6 @@ export const getPopularMovies = async (page = 1) => {
   }
 }
 
-// export const addRatingMovies = async (sessionId, movieId, rate) => {
-//   const options = {
-//     method: 'POST',
-//     url: `/movie/${movieId}/rating`,
-//     params: { guest_session_id: `${sessionId}`, api_key: `${API_KEY}` },
-//     headers: {
-//       accept: 'application/json',
-//       'Content-Type': 'application/json;charset=utf-8',
-//     },
-//     data: `{"value": ${rate}}`,
-//   }
-
-//   axios.request(options).then(console.log)
-// }
-
 export const getRatedMovies = async (sessionID, page = 1) => {
   const { data } = await axios.get(`/guest_session/${sessionID}/rated/movies`, {
     params: {
