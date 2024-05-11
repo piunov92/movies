@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useRef } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Layout } from 'antd'
 import Context from '../context/context'
 import TabItems from '../tabs/tabs'
@@ -11,8 +11,10 @@ import RatedTab from '../tabs/ratedTab'
 function App() {
   const [genres, setGenres] = useState([])
   const [guestSession, setGuestSession] = useState({})
-  // const errGetRatingMovies = useRef(null)
-  const errGetRatingMovies = useState(null)
+  const moviesRatedState = useState([])
+  const errGetRatingMoviesState = useState(null)
+  const pageSizeState = useState(null)
+  const currentPageState = useState(1)
 
   useEffect(() => {
     getGenreMovies().then((data) => setGenres(data))
@@ -22,8 +24,22 @@ function App() {
   }, [])
 
   const context = useMemo(
-    () => ({ genres, guestSession, errGetRatingMovies }),
-    [genres, guestSession, errGetRatingMovies],
+    () => ({
+      genres,
+      guestSession,
+      errGetRatingMoviesState,
+      currentPageState,
+      moviesRatedState,
+      pageSizeState,
+    }),
+    [
+      genres,
+      guestSession,
+      errGetRatingMoviesState,
+      currentPageState,
+      moviesRatedState,
+      pageSizeState,
+    ],
   )
 
   return (

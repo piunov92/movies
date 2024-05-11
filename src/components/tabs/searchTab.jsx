@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useDebounce } from 'use-debounce'
 import { Layout, Input, Pagination } from 'antd'
 import CardList from '../cards/cards'
 import LoadingSpin from '../loadingSpin/LoadingSpin'
 import { getFoundMovies, getPopularMovies } from '../../services/getResource'
+import Context from '../context/context'
 
 function SearchTab() {
   const [movies, setMovies] = useState([])
   const [searchField, setSearchField] = useState('')
-  const [pageSize, setPageSize] = useState(0)
-  const [currentPage, setCurrentPage] = useState(1)
+  const { currentPageState, pageSizeState } = useContext(Context)
+  const [pageSize, setPageSize] = pageSizeState
+  const [currentPage, setCurrentPage] = currentPageState
   const [debouncedValue] = useDebounce(searchField, 500)
 
   const MAX_API_ELEMENTS = 10000
@@ -26,7 +28,7 @@ function SearchTab() {
         setPageSize(data.pages)
       })
     }
-  }, [debouncedValue, currentPage])
+  }, [debouncedValue, currentPage, setPageSize])
 
   const handleSearch = (e) => {
     setSearchField(e.target.value)

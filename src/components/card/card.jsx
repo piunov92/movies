@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Card, Flex, Typography, Image } from 'antd'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
@@ -11,7 +11,8 @@ import RateItem from '../rate/rate'
 import './card.scss'
 
 function CardItem({ movies }) {
-  const { title, overview, releaseDate, posterPath, genreIds, id } = movies
+  const { title, overview, releaseDate, posterPath, genreIds, id, rating } =
+    movies
   const { genres } = useContext(Context)
   const { Title, Text, Paragraph } = Typography
   const [expand, setExpand] = useState(false)
@@ -88,7 +89,7 @@ function CardItem({ movies }) {
           >
             {overview}
           </Paragraph>
-          <RateItem movieId={id} />
+          <RateItem movieId={id} rating={rating} />
         </Flex>
       </Flex>
     </Card>

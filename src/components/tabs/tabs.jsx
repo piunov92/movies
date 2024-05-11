@@ -1,11 +1,19 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { ConfigProvider, Tabs } from 'antd'
 import PropTypes from 'prop-types'
 import { getRatedMovies } from '../../services/getResource'
 import Context from '../context/context'
 
 function TabItems({ searchContent, ratedContent }) {
-  const { guestSession, errGetRatingMovies } = useContext(Context)
+  const {
+    guestSession,
+    errGetRatingMoviesState,
+    currentPageState,
+    moviesRatedState,
+    pageSizeState,
+  } = useContext(Context)
+
+  const [currentPage] = currentPageState
   const { guestSessionId } = guestSession
 
   const label = ['Search', 'Rated']
@@ -20,13 +28,15 @@ function TabItems({ searchContent, ratedContent }) {
 
   const handleOnTabClick = (key) => {
     if (key === '2') {
-      getRatedMovies(guestSessionId)
+      getRatedMovies(guestSessionId, currentPage)
         .then((response) => {
-          errGetRatingMovies[1](null)
+          errGetRatingMoviesState[1](null)
+          moviesRatedState[1](response.results)
+          pageSizeState[1](response.pages)
           console.log(response)
         })
         .catch((err) => {
-          errGetRatingMovies[1](err.response.data.status_message)
+          errGetRatingMoviesState[1](err.response.data.status_message)
           console.error(err.response.data.status_message)
         })
     }

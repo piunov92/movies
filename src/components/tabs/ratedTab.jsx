@@ -1,51 +1,35 @@
-import { useState, useEffect, useContext } from 'react'
-// import { Pagination } from 'antd'
+import { useContext } from 'react'
+import { Pagination } from 'antd'
+import CardList from '../cards/cards'
 import Context from '../context/context'
-// import CardList from '../cards/cards'
-// import { getRatedMovies } from '../../services/getResource'
 
 function RatedTab() {
-  // const [moviesRated, setMoviesRated] = useState([])
-  // const [pageSize, setPageSize] = useState(0)
-  // const [currentPage, setCurrentPage] = useState(1)
-  const { guestSession, errGetRatingMovies } = useContext(Context)
-  const [errMessage] = errGetRatingMovies
-  // const { guestSessionId } = guestSession
+  const {
+    errGetRatingMoviesState,
+    currentPageState,
+    moviesRatedState,
+    pageSizeState,
+  } = useContext(Context)
 
-  // const MAX_API_ELEMENTS = 10000
-
-  // useEffect(() => {
-  //   getRatedMovies(guestSessionId, currentPage).then((data) => {
-  //     setMoviesRated(data.results)
-  //     setPageSize(data.pages)
-  //     console.log(data.results)
-  //   })
-  // })
-
-  // console.log(errGetRatingMovies.current)
-
-  useEffect(() => {
-    console.log(errMessage)
-  })
+  const [moviesRated] = moviesRatedState
+  const [pageSize] = pageSizeState
+  const [errMessage] = errGetRatingMoviesState
 
   return (
     <div>
-      {/* {moviesRated.length > 0 ? (
+      {moviesRated.length > 0 ? (
         <>
           <CardList movies={moviesRated} />
           <Pagination
             className='pagination pagination--layout'
-            onChange={(prev) => setCurrentPage(prev)}
+            onChange={(prev) => currentPageState[1](prev)}
             defaultPageSize={moviesRated.length}
-            total={
-              pageSize > 500 ? MAX_API_ELEMENTS : pageSize * moviesRated.length
-            }
+            total={pageSize}
           />
         </>
       ) : (
-        <h1>Array is Empty</h1>
-      )} */}
-      <p>{errMessage}</p>
+        <p>{errMessage}</p>
+      )}
     </div>
   )
 }

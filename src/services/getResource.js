@@ -1,5 +1,4 @@
-import axios, { HttpStatusCode } from 'axios'
-import { se } from 'date-fns/locale'
+import axios from 'axios'
 
 axios.defaults.baseURL = 'https://api.themoviedb.org/3'
 const API_KEY = 'daa887ae5c238ea93af0c204f35b31c9'

@@ -4,11 +4,10 @@ import PropTypes from 'prop-types'
 import Context from '../context/context'
 import { setRatingMovies } from '../../services/getResource'
 
-function RateItem({ movieId }) {
+function RateItem({ movieId, rating }) {
   const [currentValue, setCurrentValue] = useState(null)
   const { guestSession } = useContext(Context)
   const { guestSessionId } = guestSession
-  // const [rating, setRating] = useState([])
 
   const handleRate = async (value) => {
     setCurrentValue(value)
@@ -29,7 +28,7 @@ function RateItem({ movieId }) {
         count={10}
         allowHalf
         onChange={(value) => handleRate(value)}
-        value={currentValue}
+        value={currentValue || rating}
         style={{ position: 'absolute', top: 245, padding: 5 }}
         allowClear={false}
       />
@@ -39,6 +38,7 @@ function RateItem({ movieId }) {
 
 RateItem.propTypes = {
   movieId: PropTypes.number.isRequired,
+  rating: PropTypes.number.isRequired,
 }
 
 export default RateItem
