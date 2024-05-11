@@ -36,9 +36,13 @@ function RateItem({ movieId, rating }) {
   )
 }
 
+RateItem.defaultProps = {
+  rating: null,
+}
+
 RateItem.propTypes = {
   movieId: PropTypes.number.isRequired,
-  rating: PropTypes.number.isRequired,
+  rating: PropTypes.number,
 }
 
 export default RateItem
