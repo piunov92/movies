@@ -1,7 +1,13 @@
+import { useContext, useEffect } from 'react'
 import { ConfigProvider, Tabs } from 'antd'
 import PropTypes from 'prop-types'
+import { getRatedMovies } from '../../services/getResource'
+import Context from '../context/context'
 
 function TabItems({ searchContent, ratedContent }) {
+  const { guestSession } = useContext(Context)
+  const { guestSessionId } = guestSession
+
   const label = ['Search', 'Rated']
   const content = [
     {
@@ -11,6 +17,14 @@ function TabItems({ searchContent, ratedContent }) {
       tab: ratedContent || null,
     },
   ]
+
+  const handleOnTabClick = (key) => {
+    if (key === '2') {
+      console.log(key)
+      getRatedMovies(guestSessionId).then(console.log)
+    }
+  }
+
   return (
     <ConfigProvider
       theme={{
@@ -33,6 +47,7 @@ function TabItems({ searchContent, ratedContent }) {
             children: content[i].tab,
           }
         })}
+        onTabClick={handleOnTabClick}
       />
     </ConfigProvider>
   )

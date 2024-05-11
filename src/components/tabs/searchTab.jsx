@@ -47,7 +47,6 @@ function SearchTab() {
           <Pagination
             className='pagination pagination--layout'
             onChange={(prev) => setCurrentPage(prev)}
-            // onShowSizeChange={500}
             defaultPageSize={movies.length}
             total={pageSize > 500 ? MAX_API_ELEMENTS : pageSize * movies.length}
           />
