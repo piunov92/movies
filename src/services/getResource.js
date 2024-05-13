@@ -96,12 +96,5 @@ export const setRatingMovies = async (sessionId, movieId, rate) => {
     data: `{"value": ${rate}}`,
   }
 
-  await axios
-    .request(options)
-    .then((response) => {
-      console.log(response.data)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+  await axios.request(options)
 }

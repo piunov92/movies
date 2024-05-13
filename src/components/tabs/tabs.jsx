@@ -27,17 +27,15 @@ function TabItems({ searchContent, ratedContent }) {
   ]
 
   const handleOnTabClick = (key) => {
-    if (key === '2') {
+    if (key === '2' && guestSessionId) {
       getRatedMovies(guestSessionId, currentPage)
         .then((response) => {
           errGetRatingMoviesState[1](null)
           moviesRatedState[1](response.results)
           pageSizeState[1](response.pages)
-          console.log(response)
         })
         .catch((err) => {
           errGetRatingMoviesState[1](err.response.data.status_message)
-          console.error(err.response.data.status_message)
         })
     }
   }

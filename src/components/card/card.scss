@@ -11,7 +11,7 @@
   }
 
   &__content {
-    margin-right: 20px;
+    width: 194px;
     margin-left: 20px;
     margin-bottom: 2em;
   }
@@ -45,5 +45,15 @@
     overflow: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  &__rating {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin: 6px;
   }
 }

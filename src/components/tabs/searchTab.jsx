@@ -9,30 +9,38 @@ import Context from '../context/context'
 function SearchTab() {
   const [movies, setMovies] = useState([])
   const [searchField, setSearchField] = useState('')
-  const { currentPageState, pageSizeState } = useContext(Context)
+  const { currentPageState, pageSizeState, networkErrorState } =
+    useContext(Context)
   const [pageSize, setPageSize] = pageSizeState
   const [currentPage, setCurrentPage] = currentPageState
   const [debouncedValue] = useDebounce(searchField, 500)
+  const [networkError, setNetworkError] = networkErrorState
 
   const MAX_API_ELEMENTS = 10000
 
   useEffect(() => {
     if (debouncedValue === '') {
-      getPopularMovies(currentPage).then((data) => {
-        setMovies(data.results, console.log(data.results))
-        setPageSize(data.pages)
-      })
+      getPopularMovies(currentPage)
+        .then((data) => {
+          setNetworkError(null)
+          setMovies(data.results)
+          setPageSize(data.pages)
+        })
+        .catch((err) => {
+          setNetworkError(err.message)
+        })
     } else {
       getFoundMovies(debouncedValue, currentPage).then((data) => {
         setMovies(data.results)
         setPageSize(data.pages)
       })
     }
-  }, [debouncedValue, currentPage, setPageSize])
+  }, [debouncedValue, currentPage, setPageSize, setNetworkError])
 
   const handleSearch = (e) => {
     setSearchField(e.target.value)
   }
+
   return (
     <Layout.Content>
       <div style={{ margin: 32 }}>
@@ -43,7 +51,7 @@ function SearchTab() {
           onChange={handleSearch}
         />
       </div>
-      {movies.length > 0 ? (
+      {movies.length > 0 && !networkError ? (
         <>
           <CardList movies={movies} />
           <Pagination

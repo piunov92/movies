@@ -1,7 +1,11 @@
+/* eslint-disable no-nested-ternary */
 import { useContext } from 'react'
 import { Pagination } from 'antd'
 import CardList from '../cards/cards'
 import Context from '../context/context'
+
+import './ratedTab.scss'
+import LoadingSpin from '../loadingSpin/LoadingSpin'
 
 function RatedTab() {
   const {
@@ -27,8 +31,10 @@ function RatedTab() {
             total={pageSize}
           />
         </>
+      ) : errMessage ? (
+        <div className='error error--layout'>{errMessage}</div>
       ) : (
-        <p>{errMessage}</p>
+        <LoadingSpin />
       )}
     </div>
   )

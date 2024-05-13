@@ -15,12 +15,26 @@ function App() {
   const errGetRatingMoviesState = useState(null)
   const pageSizeState = useState(null)
   const currentPageState = useState(1)
+  const networkErrorState = useState(null)
 
   useEffect(() => {
-    getGenreMovies().then((data) => setGenres(data))
-    createGuestSession().then((data) =>
-      setGuestSession(data, console.log(data)),
-    )
+    getGenreMovies()
+      .then((data) => {
+        networkErrorState[1](null)
+        setGenres(data)
+      })
+      .catch((err) => {
+        networkErrorState[1](err)
+      })
+    createGuestSession()
+      .then((data) => {
+        networkErrorState[1](null)
+        setGuestSession(data)
+      })
+      .catch((err) => {
+        networkErrorState[1](err)
+      })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const context = useMemo(
@@ -31,6 +45,7 @@ function App() {
       currentPageState,
       moviesRatedState,
       pageSizeState,
+      networkErrorState,
     }),
     [
       genres,
@@ -39,6 +54,7 @@ function App() {
       currentPageState,
       moviesRatedState,
       pageSizeState,
+      networkErrorState,
     ],
   )
 

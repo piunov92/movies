@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Card, Flex, Typography, Image } from 'antd'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
@@ -11,8 +11,16 @@ import RateItem from '../rate/rate'
 import './card.scss'
 
 function CardItem({ movies }) {
-  const { title, overview, releaseDate, posterPath, genreIds, id, rating } =
-    movies
+  const {
+    title,
+    overview,
+    releaseDate,
+    posterPath,
+    genreIds,
+    id,
+    rating,
+    voteAverage,
+  } = movies
   const { genres } = useContext(Context)
   const { Title, Text, Paragraph } = Typography
   const [expand, setExpand] = useState(false)
@@ -26,6 +34,27 @@ function CardItem({ movies }) {
       ),
     )
     return genreTitles
+  }
+
+  const voteAverageStyleColor = (value) => {
+    let color = null
+    switch (true) {
+      case value < 4:
+        color = '#E90000'
+        break
+      case value > 2 && value < 6:
+        color = '#E97E00'
+        break
+      case value > 4 && value < 8:
+        color = '#E9D100'
+        break
+      case value > 7:
+        color = '#66E900'
+        break
+      default:
+        color = '#808080'
+    }
+    return color
   }
 
   const fontStyle = {
@@ -91,6 +120,14 @@ function CardItem({ movies }) {
           </Paragraph>
           <RateItem movieId={id} rating={rating} />
         </Flex>
+        <div
+          className='card__rating'
+          style={{
+            border: `3px solid ${voteAverageStyleColor(Math.trunc(voteAverage))}`,
+          }}
+        >
+          {voteAverage.toFixed(1)}
+        </div>
       </Flex>
     </Card>
   )
