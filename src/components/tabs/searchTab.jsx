@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { useState, useEffect, useContext } from 'react'
 import { useDebounce } from 'use-debounce'
 import { Layout, Input, Pagination } from 'antd'
@@ -5,6 +6,8 @@ import CardList from '../cards/cards'
 import LoadingSpin from '../loadingSpin/LoadingSpin'
 import { getFoundMovies, getPopularMovies } from '../../services/getResource'
 import Context from '../context/context'
+
+import './tabs.scss'
 
 function SearchTab() {
   const [movies, setMovies] = useState([])
@@ -51,7 +54,7 @@ function SearchTab() {
           onChange={handleSearch}
         />
       </div>
-      {movies.length > 0 && !networkError ? (
+      {movies.length > 0 ? (
         <>
           <CardList movies={movies} />
           <Pagination
@@ -61,6 +64,8 @@ function SearchTab() {
             total={pageSize > 500 ? MAX_API_ELEMENTS : pageSize * movies.length}
           />
         </>
+      ) : networkError ? (
+        <div className='error error--layout'>{networkError}</div>
       ) : (
         <LoadingSpin />
       )}

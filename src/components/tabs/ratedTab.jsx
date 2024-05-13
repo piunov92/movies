@@ -3,9 +3,9 @@ import { useContext } from 'react'
 import { Pagination } from 'antd'
 import CardList from '../cards/cards'
 import Context from '../context/context'
-
-import './ratedTab.scss'
 import LoadingSpin from '../loadingSpin/LoadingSpin'
+
+import './tabs.scss'
 
 function RatedTab() {
   const {
@@ -13,11 +13,13 @@ function RatedTab() {
     currentPageState,
     moviesRatedState,
     pageSizeState,
+    networkErrorState,
   } = useContext(Context)
 
   const [moviesRated] = moviesRatedState
   const [pageSize] = pageSizeState
   const [errMessage] = errGetRatingMoviesState
+  const [networkError] = networkErrorState
 
   return (
     <div>
@@ -31,8 +33,8 @@ function RatedTab() {
             total={pageSize}
           />
         </>
-      ) : errMessage ? (
-        <div className='error error--layout'>{errMessage}</div>
+      ) : errMessage || networkError ? (
+        <div className='error error--layout'>{errMessage || networkError}</div>
       ) : (
         <LoadingSpin />
       )}

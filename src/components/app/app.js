@@ -20,19 +20,17 @@ function App() {
   useEffect(() => {
     getGenreMovies()
       .then((data) => {
-        networkErrorState[1](null)
         setGenres(data)
       })
       .catch((err) => {
-        networkErrorState[1](err)
+        networkErrorState[1](err.message)
       })
     createGuestSession()
       .then((data) => {
-        networkErrorState[1](null)
         setGuestSession(data)
       })
       .catch((err) => {
-        networkErrorState[1](err)
+        networkErrorState[1](err.message)
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
